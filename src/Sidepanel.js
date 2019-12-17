@@ -73,43 +73,48 @@ function useWindowDimensions(fn) {
 }
 
 export default function SidePanel({ layers, setSelectedLayer, selectedLayer }) {
-  const [isHidden, setIsHidden] = useState(false);
+  const [isMinimised, setIsMinimised] = useState(false);
+
   const { width } = useWindowDimensions(() => {
-    if (isHidden) {
-      setIsHidden(false);
+    if (isMinimised) {
+      setIsMinimised(false);
     }
   });
 
   const [ref, bounds] = useMeasure();
 
   const animation = useSpring({
-    transform: `translateX(${
-      isHidden ? "-" + (bounds.width + 10) + "px" : "0px"
-    })`, // @Cleanup - horrible way of contructing a string, // 10 is for the left assignment
-    opacity: 1
+    transform: `translateX(${isMinimised ? -(bounds.width + 10) : 0}px)`,
+    opacity: 1,
+    from: { opacity: 0 }
   });
 
   const animation2 = useSpring({
-    transform: `translateY(${isHidden ? "-" + bounds.height + "px" : "0px"})`, // @Cleanup - horrible way of contructing a string,
-    opacity: 1
+    transform: `translateY(${isMinimised ? -bounds.height : 0}px)`,
+    opacity: 1,
+    from: { opacity: 0 }
   });
 
   let ArrowIcon = MdKeyboardArrowLeft;
 
-  if (isHidden) {
+  if (isMinimised) {
     ArrowIcon = MdKeyboardArrowRight;
   }
 
   if (width < 400) {
     ArrowIcon = MdKeyboardArrowUp;
-    if (isHidden) {
+    if (isMinimised) {
       ArrowIcon = MdKeyboardArrowDown;
     }
   }
 
   return (
     <StyledThing style={width < 400 ? animation2 : animation} ref={ref}>
-      <StyledMinimiser onClick={() => setIsHidden(!isHidden)}>
+      <StyledMinimiser
+        onClick={() => {
+          setIsMinimised(!isMinimised);
+        }}
+      >
         <ArrowIcon size={30} color="gray" />
       </StyledMinimiser>
       <div style={{ marginBottom: 20 }}>

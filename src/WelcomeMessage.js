@@ -5,7 +5,7 @@ import { FaGlobeAmericas } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
 import { AiFillGithub } from "react-icons/ai";
 
-const Thing = styled(animated.div)`
+const Container = styled(animated.div)`
   background-color: rgba(255, 255, 255, 0.8);
   position: fixed;
   cursor: default;
@@ -49,12 +49,11 @@ function Card({ children, isRight, isClosed, setIsClosed }) {
   const animation = useSpring({
     transform: "translateX(0px)",
     opacity: isClosed ? 0 : 1,
-    from: { transform: "translateX(50px)", opacity: 0 },
-    delay: !isClosed && 300
+    from: { transform: "translateX(50px)", opacity: 0 }
   });
 
   return (
-    <Thing style={animation}>
+    <Container style={animation}>
       <div
         style={{
           position: "absolute",
@@ -70,18 +69,33 @@ function Card({ children, isRight, isClosed, setIsClosed }) {
         />
       </div>
       {children}
-    </Thing>
+    </Container>
+  );
+}
+
+// @Question - does it make sense to have the github link here?
+function Linky() {
+  const animation = useSpring({
+    opacity: 1,
+    from: { opacity: 0 },
+    delay: 1000,
+    ease: 10000
+  });
+
+  return (
+    <StyledGithubLink
+      style={animation}
+      target="_blank"
+      rel="noopener noreferrer"
+      href="https://www.github.com/taq2/mapping-tool"
+    >
+      <AiFillGithub size={30} color="black" />
+    </StyledGithubLink>
   );
 }
 
 export default function WelcomeMessage() {
   const [isClosed, setIsClosed] = useState(false);
-
-  const animation = useSpring({
-    opacity: 1,
-    from: { opacity: 0 },
-    delay: 95
-  });
 
   return (
     <>
@@ -103,11 +117,7 @@ export default function WelcomeMessage() {
           </span>
         </div>
       </Card>
-      {isClosed && (
-        <StyledGithubLink style={animation} href="https://www.github.com">
-          <AiFillGithub size={30} color="black" />
-        </StyledGithubLink>
-      )}
+      {isClosed && <Linky />}
     </>
   );
 }

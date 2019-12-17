@@ -1,19 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
-import ReactMapGL, {
-  Marker,
-  MapController,
-  Popup,
-  Source,
-  Layer
-} from "react-map-gl";
+import React, { useState, useRef } from "react";
+import ReactMapGL, { MapController } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
-import axios from "axios";
 // import Geocoder from "react-map-gl-geocoder";
+
+import MapLayers from "./MapLayers";
 
 import WelcomeMessage from "./WelcomeMessage";
 import Sidepanel from "./Sidepanel";
-import visitedPlaces from "./visitedPlaces.json";
 
 class CustomMapController extends MapController {
   _onPan(event) {
@@ -49,79 +43,15 @@ const layers = [
   // "Fill in your visted places"
 ];
 
-const geojson = {
-  type: "FeatureCollection",
-  features: [
-    {
-      type: "Feature",
-      geometry: { type: "Point", coordinates: [-4.697303, 53.456371] }
-    }
-  ]
-};
-
-function PopupMessage(props) {
-  const [weather1, setWeather1] = useState();
-
-  useEffect(() => {
-    axios
-      .get(
-        "http://api.openweathermap.org/data/2.5/weather?lat=" +
-          props.latitude +
-          "&lon=" +
-          props.longitude +
-          "&APPID=" +
-          process.env.REACT_APP_WEATHER_API_TOKEN
-      )
-      .then(response => {
-        setWeather1(response.data);
-      });
-  }, [props.latitude, props.longitude]);
-
-  if (weather1 == null) {
-    return <div>Loading</div>;
-  }
-
-  return <div>{weather1.main.temp}</div>;
-}
-
-function CustomLayer({ selectedLayer }) {
-  const [selectedMarker, setSelectedMarker] = useState();
-  switch (selectedLayer) {
-    case "Places Arjun has visited in the UK":
-      return (
-        <>
-          {visitedPlaces.map((location, i) => (
-            <Marker key={i} {...location}>
-              <strong
-                onClick={() => {
-                  setSelectedMarker(i);
-                }}
-                style={{
-                  fontSize: i === selectedMarker ? 40 : 30,
-                  cursor: "pointer",
-                  color: i === selectedMarker ? "purple" : null
-                }}
-              >
-                *
-              </strong>
-            </Marker>
-          ))}
-          {selectedMarker != null && (
-            <Popup
-              {...visitedPlaces[selectedMarker]}
-              onClose={() => {
-                setSelectedMarker();
-              }}
-            >
-              <PopupMessage {...visitedPlaces[selectedMarker]} />
-            </Popup>
-          )}
-        </>
-      );
-    default:
-      return null;
-  }
-}
+// const geojson = {
+//   type: "FeatureCollection",
+//   features: [
+//     {
+//       type: "Feature",
+//       geometry: { type: "Point", coordinates: [-4.697303, 53.456371] }
+//     }
+//   ]
+// };
 
 function App() {
   const [viewport, setViewport] = useState({
@@ -169,7 +99,7 @@ function App() {
           }}
           mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
         /> */}
-        <Source id="my-data" type="geojson" data={geojson}>
+        {/* <Source id="my-data" type="geojson" data={geojson}>
           <Layer
             type="circle"
             paint={{
@@ -177,9 +107,8 @@ function App() {
               "circle-color": "#007cbf"
             }}
           />
-        </Source>
-        <CustomLayer selectedLayer={selectedLayer} />
-
+        </Source> */}
+        <MapLayers selectedLayer={selectedLayer} />
         {isMapLoaded && (
           <Sidepanel
             layers={layers}
