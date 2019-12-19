@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
-import ReactMapGL, { MapController } from "react-map-gl";
+import ReactMapGL from //, { MapController }
+"react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import "react-map-gl-geocoder/dist/mapbox-gl-geocoder.css";
 // import Geocoder from "react-map-gl-geocoder";
@@ -9,31 +10,31 @@ import MapLayers from "./MapLayers";
 import WelcomeMessage from "./WelcomeMessage";
 import Sidepanel from "./Sidepanel";
 
-class CustomMapController extends MapController {
-  _onPan(event) {
-    // ignore pan on geocoder input
-    if (this._isGeocoderInputNode(event.target)) {
-      return;
-    }
+// class CustomMapController extends MapController {
+//   _onPan(event) {
+//     // ignore pan on geocoder input
+//     if (this._isGeocoderInputNode(event.target)) {
+//       return;
+//     }
+//
+//     super._onPan(event);
+//   }
+//
+//   _onDoubleTap(event) {
+//     // ignore double taps on geocoder input
+//     if (this._isGeocoderInputNode(event.target)) {
+//       return;
+//     }
+//
+//     super._onDoubleTap(event);
+//   }
+//
+//   _isGeocoderInputNode(node) {
+//     return node.classList.contains("mapboxgl-ctrl-geocoder--input");
+//   }
+// }
 
-    super._onPan(event);
-  }
-
-  _onDoubleTap(event) {
-    // ignore double taps on geocoder input
-    if (this._isGeocoderInputNode(event.target)) {
-      return;
-    }
-
-    super._onDoubleTap(event);
-  }
-
-  _isGeocoderInputNode(node) {
-    return node.classList.contains("mapboxgl-ctrl-geocoder--input");
-  }
-}
-
-const customMapController = new CustomMapController();
+// const customMapController = new CustomMapController();
 
 const layers = [
   "Places Arjun has visited in the UK",
@@ -72,7 +73,7 @@ function App() {
       <ReactMapGL
         {...viewport}
         ref={mapRef}
-        controller={customMapController}
+        // controller={customMapController}
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
         onViewportChange={setViewport}
         mapStyle="mapbox://styles/mapbox/streets-v11"
