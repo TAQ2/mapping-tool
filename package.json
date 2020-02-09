@@ -8,6 +8,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.0",
+    "gh-pages": "^2.2.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-icons": "^3.8.0",
@@ -18,11 +19,19 @@
     "react-use-measure": "^2.0.0",
     "styled-components": "^4.4.1"
   },
+  "homepage": "http://taq2.github.io/mapping-tool",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
+  },
+  "husky": {
+    "hooks": {
+      "post-commit": "npm run deploy"
+    }
   },
   "eslintConfig": {
     "extends": "react-app"

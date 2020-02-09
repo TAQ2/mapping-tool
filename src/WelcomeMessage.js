@@ -5,6 +5,9 @@ import { FaGlobeAmericas } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
 import { AiFillGithub } from "react-icons/ai";
 
+// @Cleanup - this file should be called toaster
+// @Cleanup - media queries are bad, check forum app
+
 const Container = styled(animated.div)`
   background-color: rgba(255, 255, 255, 0.8);
   position: fixed;
@@ -18,7 +21,7 @@ const Container = styled(animated.div)`
   }
 
   @media (max-width: 900px) {
-    top: unset;
+    top: unset; // @Incomplete - do we need this?
     right: 10%;
     width: 80%;
     bottom: 4%;
@@ -74,6 +77,7 @@ function Card({ children, isRight, isClosed, setIsClosed }) {
 }
 
 // @Question - does it make sense to have the github link here?
+// @Cleanup - bad name
 function Linky() {
   const animation = useSpring({
     opacity: 1,
